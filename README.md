@@ -61,7 +61,27 @@ go build -o dynamic-proxy
 
 #### Docker Deployment
 
-**Using Docker:**
+**Using Pre-built Image (GHCR):**
+
+Multi-arch images (`linux/amd64` + `linux/arm64`) are published to GitHub Container Registry.
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/caigq99/dynamic-proxy:latest
+
+# Run the container
+docker run -d \
+  --name dynamic-proxy \
+  -p 17283:17283 \
+  -p 17284:17284 \
+  -p 17285:17285 \
+  -p 17286:17286 \
+  -v $(pwd)/config.yaml:/app/config.yaml:ro \
+  --restart unless-stopped \
+  ghcr.io/caigq99/dynamic-proxy:latest
+```
+
+**Using Docker (build from source):**
 
 ```bash
 # Build the image
@@ -96,6 +116,7 @@ docker-compose down
 
 The Docker image is built using multi-stage builds for minimal size:
 - Base image: Alpine Linux
+- Multi-arch support: `linux/amd64`, `linux/arm64`
 - Includes CA certificates for HTTPS
 - Exposes ports:
   - 17283 (SOCKS5 Strict - SSL verification enabled)
@@ -409,7 +430,27 @@ go build -o dynamic-proxy
 
 #### Docker 部署
 
-**使用 Docker:**
+**使用预构建镜像 (GHCR):**
+
+多架构镜像（`linux/amd64` + `linux/arm64`）已发布到 GitHub Container Registry。
+
+```bash
+# 拉取最新镜像
+docker pull ghcr.io/caigq99/dynamic-proxy:latest
+
+# 运行容器
+docker run -d \
+  --name dynamic-proxy \
+  -p 17283:17283 \
+  -p 17284:17284 \
+  -p 17285:17285 \
+  -p 17286:17286 \
+  -v $(pwd)/config.yaml:/app/config.yaml:ro \
+  --restart unless-stopped \
+  ghcr.io/caigq99/dynamic-proxy:latest
+```
+
+**使用 Docker（从源码构建）:**
 
 ```bash
 # 构建镜像
@@ -444,6 +485,7 @@ docker-compose down
 
 Docker 镜像使用多阶段构建，体积最小化：
 - 基础镜像: Alpine Linux
+- 多架构支持: `linux/amd64`、`linux/arm64`
 - 包含 CA 证书支持 HTTPS
 - 暴露端口:
   - 17283 (SOCKS5 严格模式 - 启用SSL验证)
